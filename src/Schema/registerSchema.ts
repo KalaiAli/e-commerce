@@ -1,5 +1,4 @@
 import { z } from "zod";
-
 export const schema = z
   .object({
     name: z
@@ -17,13 +16,12 @@ export const schema = z
 
     rePassword: z.string().min(1, "Please confirm your password"),
 
-    countryCode: z.string().min(1, "Please select your country"),
-
     phone: z
       .string()
-      .min(6, "Phone number is too short")
-      .max(15, "Phone number is too long")
-      .regex(/^[0-9]+$/, "Phone number must contain only numbers"),
+      .regex(
+        /^01[0125][0-9]{8}$/,
+        "Please enter a valid Egyptian mobile number",
+      ),
   })
   .refine((data) => data.password === data.rePassword, {
     message: "Passwords do not match",

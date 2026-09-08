@@ -1,92 +1,59 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import { Button } from "@base-ui/react/button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
+import { Eye, EyeOff } from "lucide-react";
+import { toast } from "@/components/ui/toast";
 
 import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import registerImage from "@/assets/register.png";
 import { schema } from "@/Schema/registerSchema";
+import { userRegister } from "@/api/actions/auth.actions";
+import { useRouter } from "next/navigation";
 
-type RegisterFormData = z.infer<typeof schema>;
 
-const countries = [
-  { name: "Egypt", code: "+20", flag: "🇪🇬" },
-  { name: "Qatar", code: "+974", flag: "🇶🇦" },
-  { name: "France", code: "+33", flag: "🇫🇷" },
-  { name: "United States", code: "+1", flag: "🇺🇸" },
-  { name: "United Kingdom", code: "+44", flag: "🇬🇧" },
-  { name: "Germany", code: "+49", flag: "🇩🇪" },
-  { name: "Italy", code: "+39", flag: "🇮🇹" },
-  { name: "Spain", code: "+34", flag: "🇪🇸" },
-  { name: "United Arab Emirates", code: "+971", flag: "🇦🇪" },
-  { name: "Saudi Arabia", code: "+966", flag: "🇸🇦" },
-  { name: "Morocco", code: "+212", flag: "🇲🇦" },
-  { name: "Algeria", code: "+213", flag: "🇩🇿" },
-  { name: "Tunisia", code: "+216", flag: "🇹🇳" },
-  { name: "Canada", code: "+1", flag: "🇨🇦" },
-  { name: "Australia", code: "+61", flag: "🇦🇺" },
-  { name: "India", code: "+91", flag: "🇮🇳" },
-  { name: "Turkey", code: "+90", flag: "🇹🇷" },
-  { name: "Japan", code: "+81", flag: "🇯🇵" },
-  { name: "China", code: "+86", flag: "🇨🇳" },
-];
+export type UserData = z.infer<typeof schema>;
 
 export default function Register() {
-  const [apiError, setApiError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showRePassword, setShowRePassword] = useState(false);
 
-  const form = useForm<RegisterFormData>({
+  const router =useRouter();
+
+  const {
+    control,
+    handleSubmit,
+    formState: { isSubmitting },
+  } = useForm<UserData>({
     resolver: zodResolver(schema),
     defaultValues: {
       name: "",
       email: "",
       password: "",
       rePassword: "",
-      countryCode: "",
       phone: "",
     },
   });
 
-  async function onSubmit(data: RegisterFormData) {
-    try {
-      setApiError("");
+  async function onSubmit(data: UserData) {
+    const isRegitser = await userRegister(data);
+    console.log(isRegitser);
 
-      const payload = {
-        name: data.name,
-        email: data.email,
-        password: data.password,
-        rePassword: data.rePassword,
-        phone: `${data.countryCode}${data.phone}`,
-      };
-
-      const response = await fetch(
-        "https://ecommerce.routemisr.com/api/v1/auth/signup",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(payload),
-        },
-      );
-
-      const result = await response.json();
-
-      if (!response.ok) {
-        setApiError(result.message || "Registration failed");
-        return;
-      }
-
-      console.log("Registration successful:", result);
-
-      form.reset();
-
-      // router.push("/login");
-    } catch (error) {
-      console.error("Registration error:", error);
-      setApiError("Something went wrong. Please try again.");
+    if (isRegitser) {
+      //  success   , naviage User
+      toast.add({
+        type: "success",
+        description: "User Created successfully.",
+      });
+      router.push('/login')
+    } else {
+      toast.add({
+        type: "error",
+        description: "Fail to create the User.",
+      });
     }
   }
 
@@ -140,14 +107,11 @@ export default function Register() {
 
                 {/* Form */}
                 <div className="mx-auto max-w-xs">
-                  <form
-                    onSubmit={form.handleSubmit(onSubmit)}
-                    className="space-y-5"
-                  >
+                  <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
                     {/* Name */}
                     <Controller
                       name="name"
-                      control={form.control}
+                      control={control}
                       render={({ field, fieldState }) => (
                         <Field data-invalid={fieldState.invalid}>
                           <FieldLabel htmlFor={field.name}>Name</FieldLabel>
@@ -172,7 +136,7 @@ export default function Register() {
                     {/* Email */}
                     <Controller
                       name="email"
-                      control={form.control}
+                      control={control}
                       render={({ field, fieldState }) => (
                         <Field data-invalid={fieldState.invalid}>
                           <FieldLabel htmlFor={field.name}>Email</FieldLabel>
@@ -197,20 +161,37 @@ export default function Register() {
                     {/* Password */}
                     <Controller
                       name="password"
-                      control={form.control}
+                      control={control}
                       render={({ field, fieldState }) => (
                         <Field data-invalid={fieldState.invalid}>
                           <FieldLabel htmlFor={field.name}>Password</FieldLabel>
 
-                          <input
-                            {...field}
-                            id={field.name}
-                            type="password"
-                            placeholder="Enter your password"
-                            autoComplete="new-password"
-                            aria-invalid={fieldState.invalid}
-                            className="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200"
-                          />
+                          <div className="relative">
+                            <input
+                              {...field}
+                              id={field.name}
+                              type={showPassword ? "text" : "password"}
+                              placeholder="Enter your password"
+                              autoComplete="new-password"
+                              aria-invalid={fieldState.invalid}
+                              className="w-full rounded-lg border border-gray-300 px-4 py-3 pr-12 text-sm outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200"
+                            />
+
+                            <button
+                              type="button"
+                              onClick={() => setShowPassword((prev) => !prev)}
+                              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 transition hover:text-gray-700"
+                              aria-label={
+                                showPassword ? "Hide password" : "Show password"
+                              }
+                            >
+                              {showPassword ? (
+                                <EyeOff size={20} />
+                              ) : (
+                                <Eye size={20} />
+                              )}
+                            </button>
+                          </div>
 
                           {fieldState.invalid && (
                             <FieldError errors={[fieldState.error]} />
@@ -222,19 +203,65 @@ export default function Register() {
                     {/* Confirm Password */}
                     <Controller
                       name="rePassword"
-                      control={form.control}
+                      control={control}
                       render={({ field, fieldState }) => (
                         <Field data-invalid={fieldState.invalid}>
                           <FieldLabel htmlFor={field.name}>
                             Confirm Password
                           </FieldLabel>
 
+                          <div className="relative">
+                            <input
+                              {...field}
+                              id={field.name}
+                              type={showRePassword ? "text" : "password"}
+                              placeholder="Confirm your password"
+                              autoComplete="new-password"
+                              aria-invalid={fieldState.invalid}
+                              className="w-full rounded-lg border border-gray-300 px-4 py-3 pr-12 text-sm outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200"
+                            />
+
+                            <button
+                              type="button"
+                              onClick={() => setShowRePassword((prev) => !prev)}
+                              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 transition hover:text-gray-700"
+                              aria-label={
+                                showRePassword
+                                  ? "Hide password"
+                                  : "Show password"
+                              }
+                            >
+                              {showRePassword ? (
+                                <EyeOff size={20} />
+                              ) : (
+                                <Eye size={20} />
+                              )}
+                            </button>
+                          </div>
+
+                          {fieldState.invalid && (
+                            <FieldError errors={[fieldState.error]} />
+                          )}
+                        </Field>
+                      )}
+                    />
+
+                    {/* Phone */}
+                    <Controller
+                      name="phone"
+                      control={control}
+                      render={({ field, fieldState }) => (
+                        <Field data-invalid={fieldState.invalid}>
+                          <FieldLabel htmlFor={field.name}>
+                            Phone Number
+                          </FieldLabel>
+
                           <input
                             {...field}
                             id={field.name}
-                            type="password"
-                            placeholder="Confirm your password"
-                            autoComplete="new-password"
+                            type="tel"
+                            placeholder="01012345678"
+                            autoComplete="tel"
                             aria-invalid={fieldState.invalid}
                             className="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200"
                           />
@@ -246,88 +273,13 @@ export default function Register() {
                       )}
                     />
 
-                    {/* Country */}
-                    <Controller
-                      name="countryCode"
-                      control={form.control}
-                      render={({ field, fieldState }) => (
-                        <Field data-invalid={fieldState.invalid}>
-                          <FieldLabel htmlFor={field.name}>Country</FieldLabel>
-
-                          <select
-                            {...field}
-                            id={field.name}
-                            aria-invalid={fieldState.invalid}
-                            className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200"
-                          >
-                            <option value="">Select your country</option>
-
-                            {countries.map((country) => (
-                              <option
-                                key={`${country.name}-${country.code}`}
-                                value={country.code}
-                              >
-                                {country.flag} {country.name} ({country.code})
-                              </option>
-                            ))}
-                          </select>
-
-                          {fieldState.invalid && (
-                            <FieldError errors={[fieldState.error]} />
-                          )}
-                        </Field>
-                      )}
-                    />
-
-                    {/* Phone - Last Input */}
-                    <Controller
-                      name="phone"
-                      control={form.control}
-                      render={({ field, fieldState }) => (
-                        <Field data-invalid={fieldState.invalid}>
-                          <FieldLabel htmlFor={field.name}>
-                            Phone Number
-                          </FieldLabel>
-
-                          <div className="flex gap-2">
-                            <div className="flex min-w-16 items-center justify-center rounded-lg border border-gray-300 bg-gray-50 px-3 text-sm font-medium text-gray-700">
-                              {form.watch("countryCode") || "+"}
-                            </div>
-
-                            <input
-                              {...field}
-                              id={field.name}
-                              type="tel"
-                              placeholder="1012345678"
-                              autoComplete="tel"
-                              aria-invalid={fieldState.invalid}
-                              className="min-w-0 flex-1 rounded-lg border border-gray-300 px-4 py-3 text-sm outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200"
-                            />
-                          </div>
-
-                          {fieldState.invalid && (
-                            <FieldError errors={[fieldState.error]} />
-                          )}
-                        </Field>
-                      )}
-                    />
-
-                    {/* API Error */}
-                    {apiError && (
-                      <div className="rounded-lg bg-red-50 px-4 py-3 text-sm text-red-600">
-                        {apiError}
-                      </div>
-                    )}
-
                     {/* Submit */}
                     <Button
                       type="submit"
-                      disabled={form.formState.isSubmitting}
+                      disabled={isSubmitting}
                       className="w-full rounded-lg bg-indigo-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-50"
                     >
-                      {form.formState.isSubmitting
-                        ? "Creating account..."
-                        : "Sign Up"}
+                      {isSubmitting ? "Creating account..." : "Sign Up"}
                     </Button>
                   </form>
                 </div>

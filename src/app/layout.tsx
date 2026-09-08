@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Exo } from "next/font/google";
 import "./globals.css";
+import { Toaster } from "@/components/ui/toast";
 
 import Navbar from "./_component/Navbar/Navbar";
 import Footer from "./_component/Footer/Footer";
@@ -23,10 +24,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body>
         <FirstNav />
         <Navbar />
-  <div className="container mx-auto">
-        {children}
-  </div>
-
+        <div className="container mx-auto">{children}</div>
+        <Toaster />
         <Footer />
       </body>
     </html>

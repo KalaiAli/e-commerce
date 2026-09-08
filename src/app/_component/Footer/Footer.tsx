@@ -6,24 +6,32 @@ export default function Footer() {
 
   const footerLinks = {
     Shop: [
-      { label: "All Products", href: "#feed" },
-      { label: "Category", href: "#discover" },
-      { label: "Brands", href: "#communities" },
+      { label: "All Products", href: "/" },
+      { label: "Category", href: "categories" },
+      { label: "Brands", href: "brands" },
       { label: "Electronics", href: "#trending" },
       { label: "Men's Fashion", href: "#trending" },
       { label: "Woman's Fashion", href: "#trending" },
     ],
-    company: [
-      { label: "About Us", href: "#about" },
-      { label: "Careers", href: "#careers" },
-      { label: "Press Kit", href: "#press" },
-      { label: "Contact", href: "#contact" },
+    Account: [
+      { label: "My Account", href: "#about" },
+      { label: "Order History", href: "#careers" },
+      { label: "Wishlist", href: "#press" },
+      { label: "Shopping Cart", href: "#contact" },
+      { label: "Sign In", href: "login" },
+      { label: "Create Account", href: "register" },
     ],
-    resources: [
-      { label: "Help Center", href: "#help" },
-      { label: "Safety Center", href: "#safety" },
-      { label: "Community Rules", href: "#rules" },
-      { label: "Verification", href: "#verify" },
+    Support: [
+      { label: "Contact Us", href: "#about" },
+      { label: "Help Center", href: "#careers" },
+      { label: "Shipping Info", href: "#press" },
+      { label: "Returns & Refunds", href: "#contact" },
+      { label: "Track Order", href: "#contact" },
+    ],
+    Legal: [
+      { label: "Privacy Policy", href: "#help" },
+      { label: "Terms of Service", href: "#safety" },
+      { label: "Cookie Policy", href: "#rules" },
     ],
   };
 
@@ -59,10 +67,9 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="w-full border-t border-gray-700 bg-[#101828] text-gray-300">
+    <footer className="bg-gray-900 text-gray-400 text-lg ">
       <div className="container mx-auto px-4 py-12 sm:px-6 lg:px-8">
-        {/* Brand & Links */}
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-5">
+        <div className="flex flex-col gap-10 lg:flex-row lg:gap-25">
           {/* Brand */}
           <div className="lg:col-span-2">
             {/* Logo */}
@@ -168,7 +175,6 @@ export default function Footer() {
               ))}
             </div>
           </div>
-
           {/* Link Columns */}
           {Object.entries(footerLinks).map(([category, links]) => (
             <div key={category}>
