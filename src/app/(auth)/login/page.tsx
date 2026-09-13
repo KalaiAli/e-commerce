@@ -1,5 +1,6 @@
 "use client";
 
+import { signIn } from "next-auth/react";
 import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { toast } from "@/components/ui/toast";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -7,18 +8,9 @@ import { useRouter } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import { schemaSignIn } from "./../../../Schema/loginShema";
-import { userLogin } from "@/api/actions/auth.actions";
 import loginImgae from "@/assets/login.png";
 
-// ====================
-// Type
-// ====================
-
 export type loginData = z.infer<typeof schemaSignIn>;
-
-// ====================
-// Component
-// ====================
 
 export default function Login() {
   const router = useRouter();
@@ -29,60 +21,54 @@ export default function Login() {
     formState: { isSubmitting },
   } = useForm<loginData>({
     resolver: zodResolver(schemaSignIn),
-
     defaultValues: {
       email: "",
       password: "",
     },
   });
 
-  // ====================
-  // Submit
-  // ====================
-
   async function onSubmit(data: loginData) {
     // console.log(data);
+    //  Signin  function  come from  next-auth       with wich way, crdedetilas or with other site  gmail, github ...
+    // const result = await signIn("credentials", {
+    //   email: data.email,
+    //   password: data.password,
+    //   redirect: false,
+    // });
 
-    // TODO:
-    // Replace this with your login API request.
-    const isLogin = await userLogin(data);
-    // console.log(isLogin);
+    const result = await signIn("credentials", { ...data, redirect: false });
 
-    if (isLogin) {
-      toast.add({
-        type: "success",
-        description: "Login successful.",
-      });
+    //  console.log(data);
 
-      router.push("/");
-    } else {
+    if (result?.error) {
       toast.add({
         type: "error",
         description: "Invalid email or password.",
       });
+
+      return;
     }
+
+    toast.add({
+      type: "success",
+      description: "Login successful.",
+    });
+
+    router.push("/");
+
   }
 
-  //  local  storage  5- 10 mb  forever  till not deleted   via client
-  //  session Storage 5 - 10Mb   til the  tab  open         via client
-  //  cookies          4 Kb      till expiry period          via client and  via serever
   return (
     <div className="min-h-screen bg-gray-100 text-gray-900">
       <div className="flex min-h-screen justify-center">
         <div className="m-0 flex max-w-7xl flex-1 justify-center bg-white shadow sm:m-10 sm:rounded-lg">
-          {/* ==================== */}
           {/* Form Section */}
-          {/* ==================== */}
-
           <div className="w-full p-6 sm:p-12 lg:w-1/2 xl:w-5/12">
             <div className="mt-12 flex flex-col items-center">
               <h1 className="text-2xl font-extrabold xl:text-3xl">Sign In</h1>
 
               <div className="mt-8 w-full flex-1">
-                {/* ==================== */}
                 {/* Social Buttons */}
-                {/* ==================== */}
-
                 <div className="flex flex-col items-center">
                   {/* Google */}
                   <button
@@ -142,20 +128,14 @@ export default function Login() {
                   </button>
                 </div>
 
-                {/* ==================== */}
                 {/* Divider */}
-                {/* ==================== */}
-
                 <div className="my-12 border-b text-center">
                   <div className="inline-block translate-y-1/2 bg-white px-2 text-sm font-medium tracking-wide text-gray-600">
                     Or sign in with e-mail
                   </div>
                 </div>
 
-                {/* ==================== */}
                 {/* Login Form */}
-                {/* ==================== */}
-
                 <form
                   onSubmit={handleSubmit(onSubmit)}
                   className="mx-auto max-w-xs"
@@ -223,10 +203,7 @@ export default function Login() {
             </div>
           </div>
 
-          {/* ==================== */}
           {/* Right Image */}
-          {/* ==================== */}
-
           <div className="hidden flex-1 bg-indigo-100 lg:flex">
             <div
               className="m-12 w-full bg-contain bg-center bg-no-repeat xl:m-16"

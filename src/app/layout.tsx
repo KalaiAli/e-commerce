@@ -6,6 +6,7 @@ import { Toaster } from "@/components/ui/toast";
 import Navbar from "./_component/Navbar/Navbar";
 import Footer from "./_component/Footer/Footer";
 import FirstNav from "./_component/FirstNav/FirstNav";
+import MyProvider from "./_component/MyProvider/MyProvider";
 
 const ExoFont = Exo({
   variable: "--font-Exo",
@@ -22,11 +23,15 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={`${ExoFont.className} antialiased`}>
       <body>
-        <FirstNav />
-        <Navbar />
-        <div className="container mx-auto">{children}</div>
-        <Toaster />
-        <Footer />
+        <MyProvider>
+          <FirstNav />
+          <Navbar />
+
+          <div className="container mx-auto">{children}</div>
+
+          <Toaster />
+          <Footer />
+        </MyProvider>
       </body>
     </html>
   );

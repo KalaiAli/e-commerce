@@ -65,7 +65,7 @@ export default function QuantitySelector({
 
           <p className="text-xl font-extrabold text-blue-600 ">
             {Number.isFinite(totalPrice)
-              ? `${totalPrice.toLocaleString()} EGP`
+              ? `${totalPrice.toLocaleString()} QAR`
               : "Price unavailable"}
           </p>
         </div>

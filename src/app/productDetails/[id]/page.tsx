@@ -70,15 +70,15 @@ export default async function ProductDetails(props: {
                   <>
                     {" "}
                     <span className="text-blue-600 text-2xl font-bold">
-                      {data.priceAfterDiscount} EGP
+                      {data.priceAfterDiscount} QAR
                     </span>
                     <span className=" mx-3 text-blue-400 text-xl font-bold line-through">
-                      {data.price} EGP
+                      {data.price} QAR
                     </span>
                   </>
                 ) : (
                   <span className="text-blue-600 text-2xl font-bold">
-                    {data.price} EGP
+                    {data.price} QAR
                   </span>
                 )}
               </div>

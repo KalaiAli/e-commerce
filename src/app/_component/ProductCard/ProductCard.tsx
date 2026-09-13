@@ -140,15 +140,15 @@ export default function ProductCard({
                   <>
                     {" "}
                     <span className="text-blue-600 text-xl font-semibold">
-                      {product.priceAfterDiscount} EGP
+                      {product.priceAfterDiscount} QAR
                     </span>
                     <span className="text-gray-400 text-sm line-through">
-                      {product.price} EGP
+                      {product.price} QAR
                     </span>
                   </>
                 ) : (
                   <span className="text-gray-400 text-sm ">
-                    {product.price} EGP
+                    {product.price} QAR
                   </span>
                 )}
               </div>
