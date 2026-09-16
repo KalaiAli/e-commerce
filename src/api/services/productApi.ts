@@ -3,12 +3,10 @@ import { productType } from "../types/productType";
 // All products API
 export async function getAllProducts(): Promise<productType[]> {
   try {
-    const response = await fetch(
-      "https://ecommerce.routemisr.com/api/v1/products",
-    );
+    const response = await fetch(`${process.env.API}products`);
 
     if (!response.ok) {
-      throw new Error("Failed to fetch products");
+      throw new Error(`Failed to fetch products: ${response.status}`);
     }
 
     const payload = await response.json();
@@ -21,16 +19,16 @@ export async function getAllProducts(): Promise<productType[]> {
 }
 
 // Product detail API
-export async function getSinglePorduct(
+export async function getSingleProduct(
   productId: string,
 ): Promise<productType> {
   try {
     const response = await fetch(
-      `https://ecommerce.routemisr.com/api/v1/products/${productId}`,
+      `${process.env.API}products/${productId}`,
     );
 
     if (!response.ok) {
-      throw new Error("Failed to fetch product");
+      throw new Error(`Failed to fetch product: ${response.status}`);
     }
 
     const payload = await response.json();

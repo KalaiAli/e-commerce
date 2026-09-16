@@ -4,9 +4,7 @@ export async function getShopCategories(): Promise<CategoryType[]> {
   try {
     // await new Promise((resolve) => setTimeout(resolve, 8000));
 
-    const response = await fetch(
-      "https://ecommerce.routemisr.com/api/v1/categories",
-    );
+    const response = await fetch(`${process.env.API}categories`);
 
     if (!response.ok) {
       throw new Error(`Failed to fetch categories: ${response.status}`);

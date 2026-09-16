@@ -2,9 +2,7 @@ import { BrandType } from "../types/brandType";
 
 export async function getShopBrands(): Promise<BrandType[]> {
   try {
-    const response = await fetch(
-      "https://ecommerce.routemisr.com/api/v1/brands",
-    );
+    const response = await fetch(`${process.env.API}brands`);
 
     if (!response.ok) {
       throw new Error(`Failed to fetch brands: ${response.status}`);
@@ -24,7 +22,7 @@ export async function getBrandDetails(
 ): Promise<BrandType> {
   try {
     const response = await fetch(
-      `https://ecommerce.routemisr.com/api/v1/brands/${brandId}`,
+      `${process.env.API}brands/${brandId}`,
     );
 
     if (!response.ok) {

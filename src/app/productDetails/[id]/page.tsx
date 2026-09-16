@@ -1,4 +1,4 @@
-import { getSinglePorduct } from "@/api/services/productApi";
+import { getSingleProduct } from "@/api/services/productApi";
 import Image from "next/image";
 import QuantitySelector from "../QuantitySelector";
 import Slider from "@/app/_component/Slider/Slider";
@@ -14,7 +14,7 @@ export default async function ProductDetails({
 }: ProductDetailsProps) {
   const { id } = await params;
 
-  const data = await getSinglePorduct(id);
+  const data = await getSingleProduct(id);
 
   const description = data.description || "";
 
