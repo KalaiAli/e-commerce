@@ -4,9 +4,10 @@ import "./globals.css";
 import { Toaster } from "@/components/ui/toast";
 
 import Navbar from "./_component/Navbar/Navbar";
-import Footer from "./_component/Footer/Footer";
+// import Footer from "./_component/Footer/Footer";
 import FirstNav from "./_component/FirstNav/FirstNav";
 import MyProvider from "./_component/MyProvider/MyProvider";
+import FooterWrapper from "./_component/Footer/FooterWrapper";
 
 const ExoFont = Exo({
   variable: "--font-Exo",
@@ -22,15 +23,11 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={`${ExoFont.className} antialiased`}>
-      <body>
+          <body suppressHydrationWarning>
         <MyProvider>
-          <FirstNav />
-          <Navbar />
-
-          <div className="container mx-auto">{children}</div>
-
-          <Toaster />
-          <Footer />
+          <FirstNav /> <Navbar />
+          <div className="container mx-auto">{children}</div> <Toaster />
+          <FooterWrapper />
         </MyProvider>
       </body>
     </html>

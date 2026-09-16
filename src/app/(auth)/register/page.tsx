@@ -40,7 +40,7 @@ export default function Register() {
 
   async function onSubmit(data: UserData) {
     const isRegitser = await userRegister(data);
-    console.log(isRegitser);
+    // console.log(isRegitser);
 
     if (isRegitser) {
       //  success   , naviage User

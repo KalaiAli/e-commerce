@@ -19,7 +19,7 @@ export async function userRegister(data: UserData) {
 
     const payload = await response.json();
 
-    console.log("payload:", payload);
+    // console.log("payload:", payload);
 
     // return payload;
     return response.ok;

@@ -1,19 +1,33 @@
 import { getAllProducts } from "@/api/services/productApi";
 import ProductCard from "../ProductCard/ProductCard";
 
-export default async function FeaturedProducts() {
-  const data = await getAllProducts();
-  // console.log(data);
+
+type FeaturedProductsProps = {
+  category: string;
+  title: string;
+};
+
+export default async function FeaturedProducts({
+  category,
+  title,
+}: FeaturedProductsProps) {
+  const products = await getAllProducts();
+
+  const filteredProducts = category
+    ? products.filter((product) => product.category._id === category)
+    : products;
+
   return (
-    <>
-      <h2 className="text-2Xl font-bold my-2 p-3 text-green-600 border-1-4 border-1-black">
-        Featured Product
-      </h2>
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4  gap-6">
-        {data?.map((product, index) => (
+    <section>
+      {/* <h2 className="my-6  border-black p-3 text-2xl font-bold text-green-600">
+        {title}
+      </h2> */}
+
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        {filteredProducts.map((product, index) => (
           <ProductCard key={product._id} product={product} index={index} />
         ))}
       </div>
-    </>
+    </section>
   );
 }

@@ -1,30 +1,57 @@
+import Image from "next/image";
+import { getShopCategories } from "@/api/services/categoriesApi";
+
 import FeaturedProducts from "./_component/featuredProducts/featuredProducts";
-import Slider from "./_component/Slider/Slider";
-import dynamic from "next/dynamic";
+import ShopCategory from "./_component/ShopCategory/ShopCategory";
 
-// Client Components:
+type HomeProps = {
+  searchParams: Promise<{
+    category?: string;
+  }>;
+};
 
-import img1 from "../assets/blog-img-1.jpeg";
-import img2 from "../assets/blog-img-2.jpeg";
-import img3 from "../assets/banner-4.jpeg";
-import Loading from "./loading";
-// import ShopCategory from "./_component/ShopCategory/ShopCategory";
+export default async function Home({ searchParams }: HomeProps) {
+  const params = await searchParams;
 
-// Client Components:
-const ShopCategory = dynamic(
-  () => import("./_component/ShopCategory/ShopCategory"),
-  { loading: () => <Loading/>},
-);
-export default function Home() {
+  const selectedCategory = params.category ?? "";
+
+  const categories = await getShopCategories();
+
+  const selectedCategoryData = categories.find(
+    (category) => category._id === selectedCategory,
+  );
+
+  const selectedCategoryName =
+    selectedCategoryData?.name ?? "Featured Products";
+
   return (
     <>
-      <Slider
-        spaceBetween={0}
-        slidesPerView={1}
-        pageList={[img1.src, img2.src, img3.src]}
-      />
       <ShopCategory />
-      <FeaturedProducts />
+
+      <div className="my-6">
+        {selectedCategoryData && (
+          <div className="mb-6 flex items-center gap-3">
+            <div className="group relative flex h-16 w-16 items-center justify-center rounded-xl border border-gray-200 bg-white p-2 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-green-500 hover:shadow-md">
+              <Image
+                src={selectedCategoryData.image}
+                alt={selectedCategoryData.name}
+                fill
+                sizes="64px"
+                className="object-contain p-2 transition-transform duration-300 group-hover:scale-110"
+              />
+            </div>
+
+            <h2 className="text-2xl font-bold text-blue-800 underline">
+              {selectedCategoryData.name}
+            </h2>
+          </div>
+        )}
+
+        <FeaturedProducts
+          category={selectedCategory}
+          title={selectedCategoryName}
+        />
+      </div>
     </>
   );
 }
