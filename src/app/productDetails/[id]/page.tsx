@@ -1,21 +1,31 @@
 import { getSinglePorduct } from "@/api/services/productApi";
-import React from "react";
 import Image from "next/image";
 import QuantitySelector from "../QuantitySelector";
 import Slider from "@/app/_component/Slider/Slider";
 
-export default async function ProductDetails(props: {
-  params: { id: string };
-}) {
-  const params = await props.params;
-  const { id } = params;
+type ProductDetailsProps = {
+  params: Promise<{
+    id: string;
+  }>;
+};
+
+export default async function ProductDetails({
+  params,
+}: ProductDetailsProps) {
+  const { id } = await params;
+
   const data = await getSinglePorduct(id);
-  // console.log(data);
-  const color = data.description.match(/Colour Name\s+([^\n]+)/i)?.[1]?.trim();
 
   const description = data.description || "";
-  const material = data.description.match(/Sole Material\t(.+)/)?.[1];
-  const department = data.description.match(/Department\t(.+)/)?.[1];
+
+  const color = description
+    .match(/Colour Name\s+([^\n]+)/i)?.[1]
+    ?.trim();
+
+  const material = description.match(/Sole Material\t(.+)/)?.[1];
+
+  const department = description.match(/Department\t(.+)/)?.[1];
+
   return (
     <>
       <div className="bg-gray-100 mt-4">
