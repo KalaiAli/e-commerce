@@ -1,4 +1,4 @@
-import { SubCategoryType } from "../types/SubCategoryType";
+import { SubCategoryType } from "../types/subCategoryType";
 
 export async function getSubCategories(
   categoryId: string,

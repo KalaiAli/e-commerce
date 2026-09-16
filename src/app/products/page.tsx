@@ -15,15 +15,14 @@ export default async function ProductsPage({
 
   const products = await getAllProducts();
 
+  //  console.log("Selected subcategory:", subcategory);
 
-//  console.log("Selected subcategory:", subcategory);
-
-//  console.log(
-//    "Products matching subcategory:",
-//    products.filter((product) =>
-//      product.subcategory?.some((item) => item._id === subcategory),
-//    ),
-//  );
+  //  console.log(
+  //    "Products matching subcategory:",
+  //    products.filter((product) =>
+  //      product.subcategory?.some((item) => item._id === subcategory),
+  //    ),
+  //  );
 
   const filteredProducts = products.filter((product) => {
     if (subcategory) {
@@ -49,8 +48,8 @@ export default async function ProductsPage({
 
       {filteredProducts.length > 0 ? (
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-          {filteredProducts.map((product) => (
-            <ProductCard key={product._id} product={product} />
+          {filteredProducts.map((product, index) => (
+            <ProductCard key={product._id} product={product} index={index} />
           ))}
         </div>
       ) : (
