@@ -72,13 +72,27 @@ export default function NavBar() {
   const router = useRouter();
   const { data: session, status } = useSession();
 
-  // console.log("session:", session);
+  // console.log("session:", session?.user.name);
   // console.log("status:", status);
   return (
     <div className="container mx-auto flex justify-between sticky top-0 z-50 bg-gray-100">
       <NavigationMenu className="bg-gray-100  max-w-full p-3">
         <NavigationMenuList className="justify-between">
-          <Image src={logo} alt="FreshMart" priority />
+<div className="flex items-center gap-3">
+  <Image src={logo} alt="FreshMart" priority />
+
+  {session?.user?.name && (
+    <>
+      <span className="rounded-md bg-purple-100 px-3 py-1 text-md font-semibold text-blue-900">
+        Welcome, {session.user.name}
+      </span>
+
+      <span className="text-sm font-medium text-gray-600">
+        Shop the Best Products & Brands
+      </span>
+    </>
+  )}
+</div>
           <div className="md:flex gap-4  hidden">
             <NavigationMenuItem>
               <Link className="font-semibold hover:text-green-800" href="/">

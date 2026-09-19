@@ -8,6 +8,7 @@ import Navbar from "./_component/Navbar/Navbar";
 import FirstNav from "./_component/FirstNav/FirstNav";
 import MyProvider from "./_component/MyProvider/MyProvider";
 import FooterWrapper from "./_component/Footer/FooterWrapper";
+import Providers from "./_component/TanstackProvider/TanstackProvider";
 
 const ExoFont = Exo({
   variable: "--font-Exo",
@@ -23,12 +24,14 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={`${ExoFont.className} antialiased`}>
-          <body suppressHydrationWarning>
-        <MyProvider>
-          <FirstNav /> <Navbar />
-          <div className="container mx-auto">{children}</div> <Toaster />
-          <FooterWrapper />
-        </MyProvider>
+      <body suppressHydrationWarning>
+        <Providers>
+          <MyProvider>
+            <FirstNav /> <Navbar />
+            <div className="container mx-auto">{children}</div> <Toaster />
+            <FooterWrapper />
+          </MyProvider>
+        </Providers>
       </body>
     </html>
   );

@@ -2,25 +2,21 @@ import { getSingleProduct } from "@/api/services/productApi";
 import Image from "next/image";
 import QuantitySelector from "../QuantitySelector";
 import Slider from "@/app/_component/Slider/Slider";
-
+import AddBtn from "@/app/_component/AddBtn/AddBtn";
 type ProductDetailsProps = {
   params: Promise<{
     id: string;
   }>;
 };
 
-export default async function ProductDetails({
-  params,
-}: ProductDetailsProps) {
+export default async function ProductDetails({ params }: ProductDetailsProps) {
   const { id } = await params;
 
   const data = await getSingleProduct(id);
 
   const description = data.description || "";
 
-  const color = description
-    .match(/Colour Name\s+([^\n]+)/i)?.[1]
-    ?.trim();
+  const color = description.match(/Colour Name\s+([^\n]+)/i)?.[1]?.trim();
 
   const material = description.match(/Sole Material\t(.+)/)?.[1];
 
@@ -80,15 +76,15 @@ export default async function ProductDetails({
                   <>
                     {" "}
                     <span className="text-blue-600 text-2xl font-bold">
-                      {data.priceAfterDiscount} QAR
+                      {data.priceAfterDiscount} EGP
                     </span>
                     <span className=" mx-3 text-blue-400 text-xl font-bold line-through">
-                      {data.price} QAR
+                      {data.price} EGP
                     </span>
                   </>
                 ) : (
                   <span className="text-blue-600 text-2xl font-bold">
-                    {data.price} QAR
+                    {data.price} EGP
                   </span>
                 )}
               </div>
@@ -221,7 +217,7 @@ export default async function ProductDetails({
 
               <QuantitySelector stock={data.quantity} price={data.price} />
               <div className="flex space-x-4 mb-6">
-                <button className="bg-indigo-600 flex flex-1  justify-center gap-2 items-center text-white py-3 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 cursor-pointer">
+                {/* <button className="bg-indigo-600 flex flex-1  justify-center gap-2 items-center text-white py-3 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 cursor-pointer">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -237,7 +233,33 @@ export default async function ProductDetails({
                     />
                   </svg>
                   Add to Cart
-                </button>
+                </button> */}
+                <AddBtn
+                  prodId={data._id}
+                  cls={
+                    "bg-green-600 flex flex-1  justify-center gap-2 items-center text-white py-3 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 cursor-pointer"
+                  }
+                  child={
+                    <>
+                      {" "}
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth="1.5"
+                        stroke="currentColor"
+                        className="size-6"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"
+                        />
+                      </svg>
+                      Add to Cart
+                    </>
+                  }
+                />
                 <button className="bg-gray-200 flex-1 flex gap-2 items-center justify-center fontBold cursor-pointer  text-gray-800 py-3 rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"

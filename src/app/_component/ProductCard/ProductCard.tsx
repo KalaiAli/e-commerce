@@ -1,6 +1,7 @@
 import { productType } from "@/api/types/productType";
 import Image from "next/image";
 import Link from "next/link";
+import AddBtn from "../AddBtn/AddBtn";
 
 export default function ProductCard({
   product,
@@ -140,19 +141,19 @@ export default function ProductCard({
                   <>
                     {" "}
                     <span className="text-blue-600 text-xl font-semibold">
-                      {product.priceAfterDiscount} QAR
+                      {product.priceAfterDiscount} EGP
                     </span>
                     <span className="text-gray-400 text-sm line-through">
-                      {product.price} QAR
+                      {product.price} EGP
                     </span>
                   </>
                 ) : (
                   <span className="text-gray-400 text-sm ">
-                    {product.price} QAR
+                    {product.price} EGP
                   </span>
                 )}
               </div>
-              <button className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center shadow text-white">
+              {/* <button className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center shadow text-white">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="20"
@@ -171,7 +172,33 @@ export default function ProductCard({
                   <path d="M17 17h-11v-14h-2" />
                   <path d="M6 5l14 1l-1 7h-13" />
                 </svg>
-              </button>
+              </button> */}
+              <AddBtn
+                prodId={product._id}
+                child={
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="icon icon-tabler icons-tabler-outline icon-tabler-shopping-cart"
+                  >
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <path d="M6 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+                    <path d="M17 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+                    <path d="M17 17h-11v-14h-2" />
+                    <path d="M6 5l14 1l-1 7h-13" />
+                  </svg>
+                }
+                cls={
+                  "w-10 h-10 rounded-full bg-green-600 flex items-center justify-center shadow text-white cursor-pointer  hover:bg-indigo-700  "
+                }
+              />
             </div>
           </div>
         </div>

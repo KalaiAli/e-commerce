@@ -78,7 +78,7 @@ export const authOptions: NextAuthOptions = {
         token.name = user.name;
         token.token = user.token;
       }
-
+      //  console.log('token----',token)
       return token;
     },
 
