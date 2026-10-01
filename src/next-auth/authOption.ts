@@ -29,12 +29,7 @@ export const authOptions: NextAuthOptions = {
           return null;
         }
 
-        const apiUrl = `${process.env.API}auth/signin`;
-
-        // console.log("API:", process.env.API);
-        // console.log("API URL:", apiUrl);
-
-        const response = await fetch(apiUrl, {
+        const response = await fetch(`${process.env.API}auth/signin`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -47,15 +42,11 @@ export const authOptions: NextAuthOptions = {
 
         const payload = await response.json();
 
-        // console.log("payload....", payload);
-
         if (!response.ok || !payload.token) {
           return null;
         }
 
         const userData = jwtDecode<UserData>(payload.token);
-
-        // console.log("userData....", userData);
 
         return {
           id: userData.id,
@@ -66,30 +57,32 @@ export const authOptions: NextAuthOptions = {
       },
     }),
   ],
-  //   callback trigger when success or refresh ,or getSession
-  callbacks: {
-    // token  obj  data =>
-    // user  obj  authorize =>
 
-    async jwt({ token, user }) {
+  callbacks: {
+    async jwt({ token, user, trigger, session }) {
       if (user) {
         token.id = user.id;
-        token.email = user.email;
         token.name = user.name;
+        token.email = user.email;
         token.token = user.token;
       }
-      //  console.log('token----',token)
+
+      if (trigger === "update" && session?.name) {
+        token.name = session.name;
+      }
+
       return token;
     },
 
     async session({ session, token }) {
-      // console.log("session --->", session, token);
-
       session.user.id = token.id;
-  
+      session.user.name = token.name;
+      session.user.email = token.email;
+
       return session;
     },
   },
+
   pages: {
     signIn: "/login",
   },

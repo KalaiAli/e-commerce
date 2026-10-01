@@ -9,7 +9,7 @@ import { updateProfileUser } from "@/api/AuthentificationAction/updateProfile.ac
 
 export default function UpdateProfile() {
   const router = useRouter();
-  const { data: session, status } = useSession();
+const { data: session, status, update } = useSession();
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -43,6 +43,10 @@ export default function UpdateProfile() {
 
       return;
     }
+
+await update({
+  name,
+});
 
     toast.add({
       title: "Profile updated successfully",
@@ -79,14 +83,14 @@ export default function UpdateProfile() {
             className="w-full rounded-lg border p-3 outline-none focus:border-green-500"
             required
           />
-
+{/* 
           <input
             type="tel"
             placeholder="Phone"
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
             className="w-full rounded-lg border p-3 outline-none focus:border-green-500"
-          />
+          /> */}
 
           <button
             type="submit"

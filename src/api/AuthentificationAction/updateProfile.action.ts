@@ -4,7 +4,7 @@ import { getTokenFunc } from "@/Utilities/getTokenData";
 
 type UpdateProfileData = {
   name: string;
-  email: string;
+  email?: string;
 };
 
 export async function updateProfileUser(data: UpdateProfileData) {
@@ -21,7 +21,7 @@ export async function updateProfileUser(data: UpdateProfileData) {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
-      token: token,
+      token,
     },
     body: JSON.stringify(data),
   });
@@ -31,13 +31,14 @@ export async function updateProfileUser(data: UpdateProfileData) {
   if (!response.ok) {
     return {
       success: false,
-      message: result.message || "Failed to update profile",
+      message:
+        result.errors?.msg || result.message || "Failed to update profile",
     };
   }
 
   return {
     success: true,
-    message: result.message || "Profile updated successfully",
+    message: "Profile updated successfully",
     data: result,
   };
 }

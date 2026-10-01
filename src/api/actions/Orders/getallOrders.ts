@@ -2,7 +2,8 @@
 
 import { jwtDecode } from "jwt-decode";
 import { getTokenFunc } from "@/Utilities/getTokenData";
-import { Order } from "@/api/types/orderType";
+import { Order } from "@/api/types/OrderType";
+
 
 type TokenData = {
   id: string;
