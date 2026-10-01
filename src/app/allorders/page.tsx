@@ -2,6 +2,8 @@ import Image from "next/image";
 import { GetAllOrders } from "@/api/actions/Orders/getallOrders";
 import Breadcrumb from "./../_component/BreadCrunmb";
 
+export const dynamic = "force-dynamic";
+
 export default async function AllOrders() {
   const payload = await GetAllOrders();
 
