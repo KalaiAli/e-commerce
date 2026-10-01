@@ -25,9 +25,7 @@ export default function AddBtn({ cls, child, prodId }: AddBtnProps) {
           : data.message,
       });
 
-      queryClient.invalidateQueries({
-        queryKey: ["GetCart"],
-      });
+      queryClient.invalidateQueries({queryKey: ["GetCart"]});
     },
   });
 
@@ -36,13 +34,22 @@ export default function AddBtn({ cls, child, prodId }: AddBtnProps) {
   }
 
   return (
-    <button
-      type="button"
-      onClick={handleAddToCart}
-      disabled={isPending}
-      className={cls}
-    >
-      {isPending ? "Adding..." : child}
-    </button>
+<button
+  type="button"
+  className={cls}
+  onClick={() => mutate(prodId)}
+  disabled={isPending}
+>
+{isPending ? (
+  <span className="relative h-5 w-5 animate-spin">
+    <span className="absolute left-1/2 top-0 h-1.5 w-1.5 -translate-x-1/2 rounded-full bg-white" />
+    <span className="absolute bottom-0 left-1/2 h-1.5 w-1.5 -translate-x-1/2 rounded-full bg-white" />
+    <span className="absolute left-0 top-1/2 h-1.5 w-1.5 -translate-y-1/2 rounded-full bg-white" />
+    <span className="absolute right-0 top-1/2 h-1.5 w-1.5 -translate-y-1/2 rounded-full bg-white" />
+  </span>
+) : (
+  child
+)}
+</button>
   );
 }

@@ -1,18 +1,20 @@
 import Image from "next/image";
 import Link from "next/link";
 import { getShopBrands } from "@/api/services/brandsApi";
-
+import Breadcrumb from "@/app/_component/BreadCrunmb";
 export default async function Brand() {
   const brands = await getShopBrands();
 
   return (
+    <>
+    <Breadcrumb/>
     <section className="py-8">
       <h2 className="mb-6 text-2xl font-bold text-gray-800">
         Brands
       </h2>
 
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
-        {brands.map((brand) => (
+        {brands.map((brand) => (  
           <Link
             key={brand._id}
             href={`/brands/${brand._id}`}
@@ -35,6 +37,7 @@ export default async function Brand() {
         ))}
       </div>
     </section>
+    </>
   );
 }
 

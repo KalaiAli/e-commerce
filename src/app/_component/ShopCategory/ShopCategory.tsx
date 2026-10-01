@@ -3,6 +3,7 @@ import Link from "next/link";
 import { getShopCategories } from "@/api/services/categoriesApi";
 import SomeDetails from "../someDetails/someDetails";
 
+
 type Category = {
   _id: string;
   name: string;
@@ -13,6 +14,8 @@ export default async function ShopCategory() {
   const categories = await getShopCategories();
 
   return (
+<>
+
     <section className="py-12">
       <div className="mb-8">
         <SomeDetails/>
@@ -59,5 +62,6 @@ export default async function ShopCategory() {
         ))}
       </div>
     </section>
+    </>
   );
 }

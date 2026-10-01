@@ -1,6 +1,6 @@
+import { GetWishList } from "@/api/actions/WishListActions/getWishList";
 import { getAllProducts } from "@/api/services/productApi";
 import ProductCard from "../ProductCard/ProductCard";
-
 
 type FeaturedProductsProps = {
   category: string;
@@ -12,6 +12,7 @@ export default async function FeaturedProducts({
   title,
 }: FeaturedProductsProps) {
   const products = await getAllProducts();
+  const wishlist = await GetWishList();
 
   const filteredProducts = category
     ? products.filter((product) => product.category._id === category)
@@ -19,14 +20,22 @@ export default async function FeaturedProducts({
 
   return (
     <section>
-      {/* <h2 className="my-6  border-black p-3 text-2xl font-bold text-green-600">
-        {title}
-      </h2> */}
+      
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+        {filteredProducts.map((product, index) => {
+          const isInWishlist =
+            wishlist.success &&
+            wishlist.data?.some((item) => item._id === product._id) === true;
 
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {filteredProducts.map((product, index) => (
-          <ProductCard key={product._id} product={product} index={index} />
-        ))}
+          return (
+            <ProductCard
+              key={product._id}
+              product={product}
+              index={index}
+              isInWishlist={isInWishlist}
+            />
+          );
+        })}
       </div>
     </section>
   );

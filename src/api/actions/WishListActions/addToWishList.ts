@@ -1,8 +1,8 @@
-
-
+"use server";
+//   with  useMutation  , API POST 
 import { getTokenFunc } from "@/Utilities/getTokenData";
 
-export async function GetCart() {
+export async function addToWishList(productId: string) {
   const token = await getTokenFunc();
 
   if (!token) {
@@ -12,12 +12,13 @@ export async function GetCart() {
     };
   }
 
-  const response = await fetch(`${process.env.APICart}cart`, {
-    method: "Get",
+  const response = await fetch(`${process.env.API}wishlist`, {
+    method: "POST",
     headers: {
-      token : token,
+      token,
       "Content-Type": "application/json",
     },
+    body: JSON.stringify({ productId }),
   });
 
   const payload = await response.json();
@@ -25,12 +26,13 @@ export async function GetCart() {
   if (!response.ok) {
     return {
       success: false,
-      message: payload?.message || "Failed to add Get cart",
+      message: payload?.message || "Failed to add product to WishList",
     };
   }
 
   return {
     success: true,
+    message: payload?.message || "Product Added to your WishList",
     data: payload,
   };
 }

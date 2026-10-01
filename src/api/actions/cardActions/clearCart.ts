@@ -2,7 +2,7 @@
 
 import { getTokenFunc } from "@/Utilities/getTokenData";
 
-export async function deleteCartItem(productId: string) {
+export async function ClearCart() {
   // console.log("DELETE ACTION STARTED:", productId);
 
   // console.log("DELETE ID:", productId);
@@ -15,10 +15,14 @@ export async function deleteCartItem(productId: string) {
     throw new Error("You must be logged in");
   }
 
-  const response = await fetch(`${process.env.APICart}cart/${productId}`, {
+
+//   APICart=https://ecommerce.routemisr.com/api/v2/
+
+  const response = await fetch(`${process.env.APICart}cart`, {
     method: "DELETE",
     headers: {
-      token,
+      token: token,
+      "Content-type": "application/json",
     },
   });
 
@@ -29,7 +33,7 @@ export async function deleteCartItem(productId: string) {
 
   if (!response.ok) {
     throw new Error(
-      payload?.message || "Failed to delete product from cart",
+      payload?.message || "Failed to clear cart",
     );
   }
 

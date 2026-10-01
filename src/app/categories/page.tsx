@@ -2,11 +2,14 @@ import Image from "next/image";
 import Link from "next/link";
 import { getShopCategories } from "@/api/services/categoriesApi";
 import SomeDetails from "@/app/_component/someDetails/someDetails";
+import Breadcrumb from "./../_component/BreadCrunmb";
 
 export default async function Categories() {
   const categories = await getShopCategories();
 
   return (
+    <>
+    <Breadcrumb/>
     <section className="py-8">
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
         {categories.map((category) => (
@@ -40,5 +43,6 @@ export default async function Categories() {
         <SomeDetails />
       </div>
     </section>
+    </>
   );
 }

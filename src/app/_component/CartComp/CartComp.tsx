@@ -1,13 +1,15 @@
 "use client";
 
-import { deleteCartItem } from "@/api/actions/deleteCartItem";
-import { updateCartItem } from "@/api/actions/updateCartItem";
+import { ClearCart } from "@/api/actions/cardActions/clearCart";
+import { deleteCartItem } from "@/api/actions/cardActions/deleteCartItem";
+import { updateCartItem } from "@/api/actions/cardActions/updateCartItem";
 import { CartResponseType } from "@/api/types/cartType";
 import Loading from "@/app/loading";
 import { toast } from "@/components/ui/toast";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function CartComp() {
   const router = useRouter();
@@ -92,6 +94,33 @@ export default function CartComp() {
     },
   });
 
+  // Clear Cart
+  const { mutate: clearCartItem, data: clearData } = useMutation({
+    mutationFn: ClearCart,
+
+    onSuccess: () => {
+      toast.add({
+        type: "success",
+        description: "Cart Cleaned Successfully",
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: ["GetCart"],
+      });
+    },
+
+    onError: (error) => {
+      toast.add({
+        type: "error",
+        description: error.message || "clean failed",
+      });
+    },
+  });
+
+  function handleClearCart() {
+    clearCartItem();
+  }
+
   // Loading
   if (isLoading) {
     return <Loading />;
@@ -109,7 +138,7 @@ export default function CartComp() {
   // Empty Cart
   if (!cartData?.numOfCartItems) {
     return (
-      <section className="flex min-h-[600px] items-center justify-center bg-white px-6 py-16 dark:bg-[#0A2025]">
+      <section className="flex min-h-150 items-center justify-center bg-white px-6 py-16 dark:bg-[#0A2025]">
         <div className="flex max-w-md flex-col items-center text-center">
           <div className="mb-6 flex h-56 w-56 items-center justify-center rounded-full bg-green-50">
             <Image
@@ -324,10 +353,11 @@ export default function CartComp() {
 
                 <td colSpan={2} className="px-2 pt-5 text-right">
                   <button
+                    onClick={handleClearCart}
                     type="button"
                     className="cursor-pointer rounded-full bg-[#f2f2f2] px-8 py-3.5 text-sm font-semibold text-[#4c4c4c] transition hover:bg-[#e6e6e6]"
                   >
-                    Update Cart
+                    Clear Cart
                   </button>
                 </td>
               </tr>
@@ -362,15 +392,26 @@ export default function CartComp() {
           </div>
 
           {/* Checkout */}
-          <button
-            type="button"
-            className="mt-5 w-full cursor-pointer rounded-full bg-[#00b206] px-10 py-4 text-base font-semibold text-white transition hover:bg-[#009b05]"
-          >
-            Proceed to checkout
-          </button>
+<div className="mt-5 flex gap-4">
+  <Link
+    href={`/checkout/${cartData?.cartId}?payment=cash`}
+    className="flex-1 rounded-full bg-[#00b206] px-6 py-4 text-center font-semibold text-white transition hover:bg-[#009b05]"
+  >
+    Pay Cash
+  </Link>
+
+  <Link
+    href={`/checkout/${cartData?.cartId}?payment=online`}
+    className="flex-1 rounded-full bg-blue-600 px-6 py-4 text-center font-semibold text-white transition hover:bg-blue-700"
+  >
+    Pay Online
+  </Link>
+</div>
+
+
+          
         </div>
       </div>
-
       {/* Coupon */}
       <div className="mt-6 flex w-full max-w-200 items-center gap-6 rounded-xl border border-[#e6e6e6] bg-white p-5 shadow-sm">
         <h3 className="w-1/4 shrink-0 text-xl font-medium leading-7.5 text-[#191919]">
