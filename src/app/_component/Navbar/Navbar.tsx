@@ -207,7 +207,7 @@ export default function NavBar() {
 
                 {/* Wishlist */}
                 <Link
-                  href="/wishList"
+                  href="/wishlist"
                   className="relative flex h-6 w-6 items-center justify-center"
                 >
                   <svg

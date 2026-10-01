@@ -1,4 +1,3 @@
-
 "use client";
 
 import Image from "next/image";
@@ -6,15 +5,13 @@ import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
 import Loading from "@/app/loading";
 
-
 import { WishListResult } from "@/api/types/WishListType";
 import AddBtn from "../_component/AddBtn/AddBtn";
 
-import Breadcrumb from './../_component/BreadCrunmb';
+import Breadcrumb from "../_component/BreadCrunmb";
 import RemoveBtnWishList from "../_component/removeBtnWishList/removeFromWishList ";
 
 async function getWishlist(): Promise<WishListResult> {
-
   const response = await fetch("/api/wishlist");
 
   if (!response.ok) {
@@ -25,40 +22,40 @@ async function getWishlist(): Promise<WishListResult> {
 }
 
 export default function WishList() {
-const {
-  data: wishlist,
-  isPending,
-  isError,
-} = useQuery<WishListResult>({
-  queryKey: ["wishlist"],
-  queryFn: getWishlist,
-  refetchOnMount: "always",
-});
+  const {
+    data: wishlist,
+    isPending,
+    isError,
+  } = useQuery<WishListResult>({
+    queryKey: ["wishlist"],
+    queryFn: getWishlist,
+    refetchOnMount: "always",
+  });
 
-if (isPending) {
-  return (
-    <section className="container mx-auto px-4 py-10">
-      <Loading/>
-    </section>
-  );
-}
-if (isError || !wishlist) {
-  return (
-    <section className="container mx-auto px-4 py-10">
-      <p>Failed to load wishlist.</p>
-    </section>
-  );
-}
+  if (isPending) {
+    return (
+      <section className="container mx-auto px-4 py-10">
+        <Loading />
+      </section>
+    );
+  }
+  if (isError || !wishlist) {
+    return (
+      <section className="container mx-auto px-4 py-10">
+        <p>Failed to load wishlist.</p>
+      </section>
+    );
+  }
 
-if (!wishlist.success) {
-  return (
-    <section className="container mx-auto px-4 py-10">
-      <p>{wishlist.message}</p>
-    </section>
-  );
-}
+  if (!wishlist.success) {
+    return (
+      <section className="container mx-auto px-4 py-10">
+        <p>{wishlist.message}</p>
+      </section>
+    );
+  }
 
-const items = wishlist.data;
+  const items = wishlist.data;
 
   return (
     <section className="container mx-auto px-4 py-10">
