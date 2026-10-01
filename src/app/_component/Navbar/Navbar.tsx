@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import { useSession, signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { useQuery } from "@tanstack/react-query";
 
 import {
@@ -16,13 +16,14 @@ import {
 } from "@/components/ui/navigation-menu";
 
 import {
-  UserRound,
-  Heart,
-  ShoppingBag,
-  Settings,
-  LogOut,
   ChevronDown,
+  Heart,
+  LogOut,
+  MapPin,
   Menu,
+  Settings,
+  ShoppingBag,
+  UserRound,
 } from "lucide-react";
 
 import logo from "../../../assets/images/freshcart-logo.svg";
@@ -87,7 +88,11 @@ export default function NavBar() {
         <NavigationMenuList className="w-full justify-between">
           {/* Logo */}
           <div className="flex items-center gap-3">
-            <Image src={logo} alt="FreshMart" priority />
+            <Image
+              src={logo}
+              alt="FreshMart"
+              priority
+            />
 
             {session?.user?.name && (
               <div className="hidden items-center gap-3 lg:flex">
@@ -141,6 +146,7 @@ export default function NavBar() {
                 className="flex items-center gap-1 font-semibold transition hover:text-green-800"
               >
                 Categories
+
                 <ChevronDown
                   className={`h-4 w-4 transition-transform ${
                     categoryOpen ? "rotate-180" : ""
@@ -179,6 +185,7 @@ export default function NavBar() {
 
                 <ProfileMenu
                   name={session.user?.name}
+                  email={session.user?.email}
                   open={profileOpen}
                   setOpen={setProfileOpen}
                   onLogout={handleLogout}
@@ -231,6 +238,12 @@ export default function NavBar() {
                       href="/allorders"
                       title="My Orders"
                       icon={<ShoppingBag className="h-5 w-5" />}
+                    />
+
+                    <MobileLink
+                      href="/address"
+                      title="My Address"
+                      icon={<MapPin className="h-5 w-5" />}
                     />
 
                     <li>
@@ -293,7 +306,7 @@ function AuthButtons() {
 }
 
 /* =========================
-   Cart / Wishlist Link
+   Action Link
 ========================= */
 
 function ActionLink({
@@ -310,10 +323,19 @@ function ActionLink({
   countColor?: "green" | "red";
 }) {
   return (
-    <Link href={href} aria-label={label} className="relative flex items-center">
+    <Link
+      href={href}
+      aria-label={label}
+      className="relative flex items-center"
+    >
       {icon}
 
-      {count > 0 && <CountBadge count={count} color={countColor} />}
+      {count > 0 && (
+        <CountBadge
+          count={count}
+          color={countColor}
+        />
+      )}
     </Link>
   );
 }
@@ -344,7 +366,11 @@ function CountBadge({
    Category Menu
 ========================= */
 
-function CategoryMenu({ onClose }: { onClose: () => void }) {
+function CategoryMenu({
+  onClose,
+}: {
+  onClose: () => void;
+}) {
   return (
     <div className="absolute left-0 top-full z-50 mt-3 w-56 rounded-lg border bg-white p-2 shadow-lg">
       {categories.map(function (category) {
@@ -369,11 +395,13 @@ function CategoryMenu({ onClose }: { onClose: () => void }) {
 
 function ProfileMenu({
   name,
+  email,
   open,
   setOpen,
   onLogout,
 }: {
   name?: string | null;
+  email?: string | null;
   open: boolean;
   setOpen: (value: boolean) => void;
   onLogout: () => void;
@@ -381,6 +409,10 @@ function ProfileMenu({
   function closeMenu() {
     setOpen(false);
   }
+
+  const addressUrl = `/address?name=${encodeURIComponent(
+    name ?? "",
+  )}&email=${encodeURIComponent(email ?? "")}`;
 
   return (
     <div className="relative">
@@ -405,20 +437,22 @@ function ProfileMenu({
 
       {open && (
         <div className="absolute right-0 top-12 z-50 w-64 overflow-hidden rounded-2xl bg-white shadow-xl ring-1 ring-gray-100">
-          {/* Header */}
+          {/* Profile Header */}
           <div className="flex items-center gap-3 border-b border-gray-100 px-5 py-4">
             <div className="flex h-11 w-11 items-center justify-center rounded-full bg-green-50 text-green-600">
               <UserRound className="h-6 w-6" />
             </div>
 
             <div>
-              <p className="font-semibold text-gray-800">{name}</p>
+              <p className="font-semibold text-gray-800">
+                {name || "User"}
+              </p>
 
               <p className="text-xs text-gray-400">My Account</p>
             </div>
           </div>
 
-          {/* Links */}
+          {/* Profile Links */}
           <div className="py-2">
             <ProfileLink
               href="/updateProfile"
@@ -445,6 +479,13 @@ function ProfileMenu({
               href="/changePassword"
               title="Change Password"
               icon={<Settings className="h-5 w-5" />}
+              onClick={closeMenu}
+            />
+
+            <ProfileLink
+              href={addressUrl}
+              title="My Address"
+              icon={<MapPin className="h-5 w-5" />}
               onClick={closeMenu}
             />
           </div>
@@ -521,17 +562,28 @@ function MobileLink({
           {title}
         </span>
 
-        {count > 0 && <CountBadge count={count} color={countColor} />}
+        {count > 0 && (
+          <CountBadge
+            count={count}
+            color={countColor}
+          />
+        )}
       </Link>
     </li>
   );
 }
 
 /* =========================
-   Mobile Navigation Item
+   List Item
 ========================= */
 
-function ListItem({ title, href }: { title: string; href: string }) {
+function ListItem({
+  title,
+  href,
+}: {
+  title: string;
+  href: string;
+}) {
   return (
     <li>
       <NavigationMenuLink asChild>
