@@ -1,13 +1,13 @@
 import { BrandType } from "../types/brandType";
 
 export async function getShopBrands(): Promise<BrandType[]> {
-  const apiUrl = process.env.API;
+  // const apiUrl = process.env.API;
 
-  if (!apiUrl) {
-    throw new Error("API environment variable is not defined");
-  }
+  // if (!apiUrl) {
+  //   throw new Error("API environment variable is not defined");
+  // }
 
-  const response = await fetch(`${apiUrl}brands`);
+  const response = await fetch(`https://ecommerce.routemisr.com/api/v1/brands`);
 
   if (!response.ok) {
     throw new Error(`Failed to fetch brands: ${response.status}`);
@@ -19,7 +19,9 @@ export async function getShopBrands(): Promise<BrandType[]> {
 }
 export async function getBrandDetails(brandId: string): Promise<BrandType> {
   try {
-    const response = await fetch(`${process.env.API}brands/${brandId}`);
+    const response = await fetch(
+      `https://ecommerce.routemisr.com/api/v1/brands/${brandId}`,
+    );
 
     if (!response.ok) {
       throw new Error(`Failed to fetch brand: ${response.status}`);
