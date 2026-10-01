@@ -1,13 +1,24 @@
 "use server";
 
-import { getTokenFunc } from "@/Utilities/getTokenData";
 import { jwtDecode } from "jwt-decode";
+import { getTokenFunc } from "@/Utilities/getTokenData";
+import { Order } from "@/api/types/orderType";
 
 type TokenData = {
   id: string;
 };
 
-export async function GetAllOrders() {
+type OrdersResult =
+  | {
+      success: true;
+      data: Order[];
+    }
+  | {
+      success: false;
+      message: string;
+    };
+
+export async function GetAllOrders(): Promise<OrdersResult> {
   const token = await getTokenFunc();
 
   if (!token) {
@@ -17,11 +28,9 @@ export async function GetAllOrders() {
     };
   }
 
-  const decoded = jwtDecode<TokenData>(token);
-  const userId = decoded.id;
+  const { id } = jwtDecode<TokenData>(token);
 
-  const response = await fetch(`${process.env.API}orders/user/${userId}`, {
-    method: "GET",
+  const response = await fetch(`${process.env.API}orders/user/${id}`, {
     headers: {
       token,
     },
@@ -29,8 +38,6 @@ export async function GetAllOrders() {
   });
 
   const payload = await response.json();
-
-  console.log("ORDERS:", JSON.stringify(payload, null, 2));
 
   if (!response.ok) {
     return {

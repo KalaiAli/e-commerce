@@ -13,7 +13,7 @@ import { toast } from "@/components/ui/toast";
 import { schemaSignIn } from "@/Schema/loginShema";
 import loginImage from "@/assets/login.png";
 
-type LoginData = z.infer<typeof schemaSignIn>;
+export type LoginData = z.infer<typeof schemaSignIn>;
 
 export default function Login() {
   const router = useRouter();

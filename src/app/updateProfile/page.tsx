@@ -13,7 +13,7 @@ export default function UpdateProfile() {
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
+
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -31,7 +31,6 @@ export default function UpdateProfile() {
     const result = await updateProfileUser({
       name,
       email,
-      phone,
     });
 
     setLoading(false);

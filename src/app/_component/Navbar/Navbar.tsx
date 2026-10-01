@@ -384,7 +384,7 @@ function ListItem({
 }) {
   return (
     <li>
-      <NavigationMenuLink asChild>
+      <NavigationMenuLink >
         <Link href={href}>
           <div className="rounded-md px-4 py-2 text-sm font-medium hover:bg-green-50 hover:text-green-700">
             {title}

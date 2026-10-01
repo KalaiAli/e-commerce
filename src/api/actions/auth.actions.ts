@@ -1,7 +1,7 @@
 "use server";
 
 import { UserData } from "@/app/(auth)/register/page";
-import { loginData } from "@/app/(auth)/login/page";
+import { LoginData } from "@/app/(auth)/login/page";
 import { cookies } from "next/headers";
 
 export async function userRegister(data: UserData) {
@@ -19,32 +19,47 @@ export async function userRegister(data: UserData) {
 
     const payload = await response.json();
 
-    // console.log("payload:", payload);
+    if (!response.ok) {
+      throw new Error(payload?.message || "Registration failed");
+    }
 
-    // return payload;
-    return response.ok;
+    return payload;
   } catch (error) {
     console.error("Registration error:", error);
+    throw error;
   }
-
-  //   const result = await response.json();
 }
 
-// export async function userLogin(data: loginData) {
-//   try {
+export async function userLogin(data: LoginData) {
+  try {
+    const response = await fetch(
+      `https://ecommerce.routemisr.com/api/v1/auth/signin`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      },
+    );
 
-//    if (response.ok) {
-//       const cookie= await cookies()
-//       cookie.set('userToken',payload.token, {
-//        httpOnly:true,
-//         // maxAge:6000,     expiry  new date
-//       })
-//    }
-//     // return payload;
-//     return response.ok;
-//   } catch (error) {
-//     console.error("Registration error:", error);
-//   }
+    const payload = await response.json();
 
-//   //   const result = await response.json();
-// }
+    if (!response.ok) {
+      throw new Error(payload?.message || "Login failed");
+    }
+
+    const cookieStore = await cookies();
+    cookieStore.set("userToken", payload.token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      maxAge: 60 * 60 * 24 * 7,
+    });
+
+    return payload;
+  } catch (error) {
+    console.error("Login error:", error);
+    throw error;
+  }
+}

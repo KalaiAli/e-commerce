@@ -38,8 +38,8 @@ export default async function AllOrders() {
   return (
     <>
       <Breadcrumb />
+
       <section className="mx-auto max-w-6xl px-4 py-10">
-        {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-800 dark:text-white">
             My Orders
@@ -50,7 +50,6 @@ export default async function AllOrders() {
           </p>
         </div>
 
-        {/* Orders */}
         <div className="space-y-6">
           {payload.data.map((order) => (
             <div
@@ -70,7 +69,6 @@ export default async function AllOrders() {
                 </div>
 
                 <div className="flex flex-wrap gap-2">
-                  {/* Payment */}
                   <span
                     className={`rounded-full px-4 py-2 text-sm font-medium ${
                       order.isPaid
@@ -81,7 +79,6 @@ export default async function AllOrders() {
                     {order.isPaid ? "Paid" : "Not Paid"}
                   </span>
 
-                  {/* Delivery */}
                   <span
                     className={`rounded-full px-4 py-2 text-sm font-medium ${
                       order.isDelivered
@@ -101,7 +98,6 @@ export default async function AllOrders() {
                     key={item._id}
                     className="flex flex-col gap-4 py-6 sm:flex-row sm:items-center"
                   >
-                    {/* Image */}
                     <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-xl border border-gray-100 bg-gray-50 dark:border-blue-900 dark:bg-blue-900">
                       <Image
                         src={item.product.imageCover}
@@ -111,7 +107,6 @@ export default async function AllOrders() {
                       />
                     </div>
 
-                    {/* Product Info */}
                     <div className="flex-1">
                       <h2 className="text-lg font-semibold text-gray-800 dark:text-white">
                         {item.product.title}
@@ -125,7 +120,6 @@ export default async function AllOrders() {
                       </p>
                     </div>
 
-                    {/* Price */}
                     <div className="text-left sm:text-right">
                       <p className="text-lg font-bold text-[#00b206]">
                         {item.price} EGP
