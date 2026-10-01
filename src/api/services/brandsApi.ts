@@ -1,11 +1,6 @@
 import { BrandType } from "../types/brandType";
 
 export async function getShopBrands(): Promise<BrandType[]> {
-  // const apiUrl = process.env.API;
-
-  // if (!apiUrl) {
-  //   throw new Error("API environment variable is not defined");
-  // }
 
   const response = await fetch(`https://ecommerce.routemisr.com/api/v1/brands`);
 
