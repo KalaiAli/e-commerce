@@ -88,11 +88,7 @@ export default function NavBar() {
         <NavigationMenuList className="w-full justify-between">
           {/* Logo */}
           <div className="flex items-center gap-3">
-            <Image
-              src={logo}
-              alt="FreshMart"
-              priority
-            />
+            <Image src={logo} alt="FreshMart" priority />
 
             {session?.user?.name && (
               <div className="hidden items-center gap-3 lg:flex">
@@ -146,7 +142,6 @@ export default function NavBar() {
                 className="flex items-center gap-1 font-semibold transition hover:text-green-800"
               >
                 Categories
-
                 <ChevronDown
                   className={`h-4 w-4 transition-transform ${
                     categoryOpen ? "rotate-180" : ""
@@ -323,19 +318,10 @@ function ActionLink({
   countColor?: "green" | "red";
 }) {
   return (
-    <Link
-      href={href}
-      aria-label={label}
-      className="relative flex items-center"
-    >
+    <Link href={href} aria-label={label} className="relative flex items-center">
       {icon}
 
-      {count > 0 && (
-        <CountBadge
-          count={count}
-          color={countColor}
-        />
-      )}
+      {count > 0 && <CountBadge count={count} color={countColor} />}
     </Link>
   );
 }
@@ -366,11 +352,7 @@ function CountBadge({
    Category Menu
 ========================= */
 
-function CategoryMenu({
-  onClose,
-}: {
-  onClose: () => void;
-}) {
+function CategoryMenu({ onClose }: { onClose: () => void }) {
   return (
     <div className="absolute left-0 top-full z-50 mt-3 w-56 rounded-lg border bg-white p-2 shadow-lg">
       {categories.map(function (category) {
@@ -444,9 +426,7 @@ function ProfileMenu({
             </div>
 
             <div>
-              <p className="font-semibold text-gray-800">
-                {name || "User"}
-              </p>
+              <p className="font-semibold text-gray-800">{name || "User"}</p>
 
               <p className="text-xs text-gray-400">My Account</p>
             </div>
@@ -562,12 +542,7 @@ function MobileLink({
           {title}
         </span>
 
-        {count > 0 && (
-          <CountBadge
-            count={count}
-            color={countColor}
-          />
-        )}
+        {count > 0 && <CountBadge count={count} color={countColor} />}
       </Link>
     </li>
   );
@@ -577,16 +552,10 @@ function MobileLink({
    List Item
 ========================= */
 
-function ListItem({
-  title,
-  href,
-}: {
-  title: string;
-  href: string;
-}) {
+function ListItem({ title, href }: { title: string; href: string }) {
   return (
     <li>
-      <NavigationMenuLink asChild>
+      <NavigationMenuLink>
         <Link
           href={href}
           className="block rounded-md px-4 py-2 text-sm font-medium transition hover:bg-green-50 hover:text-green-700"
