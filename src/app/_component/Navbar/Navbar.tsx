@@ -157,6 +157,14 @@ export default function NavBar() {
                 />
               )}
             </NavigationMenuItem>
+              <NavigationMenuItem>
+              <Link
+                href="/about"
+                className="font-semibold transition hover:text-green-800"
+              >
+                About
+              </Link>
+            </NavigationMenuItem>          
           </div>
 
           {/* Desktop Actions */}

@@ -23,7 +23,8 @@ export default function ProductCard({
 
   return (
     <div className="my-2">
-      <div className="w-full rounded-lg border border-blue-200 p-4 shadow-md transition-all duration-300 hover:-translate-y-2 hover:shadow-lg">
+      <div className="rounded-lg border border-blue-200 p-4 shadow-md transition-all duration-300 hover:-translate-y-2 hover:shadow-lg">
+        {/* Product Image */}
         <div className="relative">
           {/* Discount */}
           {product.priceAfterDiscount && (
@@ -36,21 +37,22 @@ export default function ProductCard({
           <AddBtnWishList
             prodId={product._id}
             initiallyAdded={isInWishlist}
-            cls="absolute right-2 top-2 z-10 flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-white text-gray-600 shadow transition-colors duration-300 hover:text-red-600!"
+            cls="absolute right-2 top-2 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-white text-gray-600 shadow transition hover:text-red-600"
           />
 
-          {/* View Product */}
+          {/* View Details */}
           <Link
             href={`/productDetails/${product._id}`}
-            className="absolute right-2 top-1/4 z-10 -translate-y-1/2"
             aria-label={`View ${product.title}`}
+            className="absolute right-2 top-12 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-white text-gray-600 shadow transition hover:bg-green-600 hover:text-white"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              fill="none"
               viewBox="0 0 24 24"
-              strokeWidth={1.5}
+              fill="none"
               stroke="currentColor"
+              strokeWidth={1.8}
+              className="h-5 w-5"
             >
               <path
                 strokeLinecap="round"
@@ -65,7 +67,6 @@ export default function ProductCard({
             </svg>
           </Link>
 
-          {/* Product Image */}
           <div className="relative h-64 w-full">
             <Image
               src={product.imageCover}
@@ -94,15 +95,15 @@ export default function ProductCard({
               <svg
                 key={star}
                 xmlns="http://www.w3.org/2000/svg"
-                fill="currentColor"
                 viewBox="0 0 20 20"
+                fill="currentColor"
                 className={`h-4 w-4 ${
                   star <= Math.round(product.ratingsAverage)
                     ? "text-orange-500"
                     : "text-gray-300"
                 }`}
               >
-                <path d="M9.049 2.927C9.349 2.2 10.651 2.2 10.951 2.927l1.558 3.779 4.004.37c.85.079 1.194 1.139.572 1.724l-2.922 2.658.87 3.917c.181.816-.68 1.448-1.419 1.034L10 13.01l-3.614 1.96c-.74.414-1.6-.218-1.419-1.034l.87-3.917-2.922-2.658c-.622-.585-.278-1.645.572-1.724L9.049 2.927z" />
+                <path d="M9.049 2.927C9.349 2.2 10.651 2.2 10.951 2.927l1.558 3.779 4.004.37 0.572 1.724-2.922 2.658.87 3.917c.181.816-.68 1.448-1.419 1.034L10 13.01l-3.614 1.96c-.74.414-1.6-.218-1.419-1.034l.87-3.917-2.922-2.658c-.622-.585-.278-1.645.572-1.724L9.049 2.927Z" />
               </svg>
             ))}
 
@@ -135,19 +136,17 @@ export default function ProductCard({
               child={
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  width="20"
-                  height="20"
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
                   strokeWidth="2"
                   strokeLinecap="round"
                   strokeLinejoin="round"
+                  className="h-5 w-5"
                 >
-                  <path d="M6 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
-                  <path d="M17 19m-2 0a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
-                  <path d="M17 17h-11v-14h-2" />
-                  <path d="M6 5l14 1l-1 7h-13" />
+                  <path d="M6 19a2 2 0 1 0 4 0 2 2 0 0 0-4 0Z" />
+                  <path d="M15 19a2 2 0 1 0 4 0 2 2 0 0 0-4 0Z" />
+                  <path d="M4 4h2l1.5 9h10l2-7H7" />
                 </svg>
               }
             />

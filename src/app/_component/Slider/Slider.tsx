@@ -29,7 +29,7 @@ export default function Slider({
         renderBullet: (index, className) => {
           return `<span class="${className} bg-green-400! w-8! h-6! flex items-center justify-center text-base!">${index + 1}</span>`;
         },
-        }}
+      }}
       spaceBetween={spaceBetween}
       slidesPerView={slidesPerView}
     >
