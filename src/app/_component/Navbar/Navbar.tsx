@@ -157,14 +157,40 @@ export default function NavBar() {
                 />
               )}
             </NavigationMenuItem>
-              <NavigationMenuItem>
+            <NavigationMenuItem>
               <Link
                 href="/about"
                 className="font-semibold transition hover:text-green-800"
               >
                 About
               </Link>
-            </NavigationMenuItem>          
+            </NavigationMenuItem>
+          </div>
+
+<div className="flex items-center gap-3 cursor-pointer hover:text-green-600">
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-green-50 ">
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className="h-5 w-5 text-green-600"
+  >
+    <path d="M3 18v-6a9 9 0 0 1 18 0v6" />
+    <path d="M21 19a2 2 0 0 1-2 2h-1v-7h3v5Z" />
+    <path d="M3 19a2 2 0 0 0 2 2h1v-7H3v5Z" />
+  </svg>
+            </div>
+
+            <div className="flex flex-col leading-tight ">
+              <span className="text-xs text-gray-400">Support</span>
+              <span className="text-sm font-semibold text-gray-800">
+                24/7 Help
+              </span>
+            </div>
           </div>
 
           {/* Desktop Actions */}
