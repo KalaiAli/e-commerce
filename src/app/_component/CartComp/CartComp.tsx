@@ -151,7 +151,7 @@ export default function CartComp() {
           </div>
 
           <p className="text-base leading-6 text-[#666666] dark:text-gray-300">
-            Looks like you haven't added anything to your cart yet. Start
+            Looks like you havent added anything to your cart yet. Start
             shopping and find something you love!
           </p>
 
@@ -167,28 +167,26 @@ export default function CartComp() {
     );
   }
 
-  return (
-    <section className="w-full bg-white px-8 py-9 dark:bg-[#0A2025]">
-      {/* Page Title */}
-      <h1 className="text-center text-[32px] font-semibold leading-9.5 text-[#191919] dark:text-white">
-        My Shopping Cart
-      </h1>
+return (
+  <section className="w-full bg-white px-4 py-9 sm:px-8 dark:bg-[#0A2025]">
+    {/* Page Title */}
+    <h1 className="text-center text-2xl font-semibold leading-9.5 text-[#191919] sm:text-[32px] dark:text-white">
+      My Shopping Cart
+    </h1>
 
-      <div className="mt-8 flex items-start gap-6">
-        {/* Cart Products */}
-        <div className="flex-1 rounded-xl border border-[#e6e6e6] bg-white p-5 shadow-sm">
-          <table className="w-full table-fixed">
+    <div className="mt-8 flex flex-col items-start gap-6 lg:flex-row">
+      {/* Cart Products */}
+      <div className="w-full flex-1 rounded-xl border border-[#e6e6e6] bg-white p-3 shadow-sm sm:p-5">
+        {/* Scrollable table wrapper for small screens */}
+        <div className="overflow-x-auto">
+          <table className="w-full min-w-150 table-fixed">
             {/* Header */}
             <thead>
               <tr className="border-b border-gray-300 text-center text-sm font-medium uppercase tracking-wide text-[#7f7f7f]">
                 <th className="w-[40%] px-2 py-3 text-left">Product</th>
-
                 <th className="w-[15%] px-2 py-3">Price</th>
-
                 <th className="w-[20%] px-2 py-3">Quantity</th>
-
                 <th className="w-[15%] px-2 py-3">Subtotal</th>
-
                 <th className="w-[10%] px-2 py-3" />
               </tr>
             </thead>
@@ -208,9 +206,8 @@ export default function CartComp() {
                         alt={product.product.title}
                         width={80}
                         height={80}
-                        className="h-20 w-20 object-contain"
+                        className="h-16 w-16 shrink-0 object-contain sm:h-20 sm:w-20"
                       />
-
                       <span className="text-sm text-[#191919]">
                         {product.product.title}
                       </span>
@@ -225,7 +222,6 @@ export default function CartComp() {
                   {/* Quantity */}
                   <td className="px-2 py-4">
                     <div className="mx-auto flex w-fit items-center rounded-full border border-[#a0a0a0] bg-white px-2 py-1">
-                      {/* Decrease */}
                       <button
                         type="button"
                         onClick={() =>
@@ -238,12 +234,7 @@ export default function CartComp() {
                         className="cursor-pointer rounded-full p-2 transition hover:bg-green-300 disabled:cursor-not-allowed disabled:opacity-50"
                         aria-label="Decrease quantity"
                       >
-                        <svg
-                          width="14"
-                          height="15"
-                          viewBox="0 0 14 15"
-                          fill="none"
-                        >
+                        <svg width="14" height="15" viewBox="0 0 14 15" fill="none">
                           <path
                             d="M2.33398 7.5H11.6673"
                             stroke="#666666"
@@ -254,12 +245,10 @@ export default function CartComp() {
                         </svg>
                       </button>
 
-                      {/* Quantity */}
                       <span className="w-8 text-center text-base text-[#191919]">
                         {product.count}
                       </span>
 
-                      {/* Increase */}
                       <button
                         type="button"
                         onClick={() =>
@@ -272,12 +261,7 @@ export default function CartComp() {
                         className="cursor-pointer rounded-full p-2 transition hover:bg-green-300 disabled:cursor-not-allowed disabled:opacity-50"
                         aria-label="Increase quantity"
                       >
-                        <svg
-                          width="14"
-                          height="15"
-                          viewBox="0 0 14 15"
-                          fill="none"
-                        >
+                        <svg width="14" height="15" viewBox="0 0 14 15" fill="none">
                           <path
                             d="M2.33398 7.49998H11.6673M7.00065 2.83331V12.1666"
                             stroke="#1A1A1A"
@@ -304,18 +288,12 @@ export default function CartComp() {
                       className="cursor-pointer rounded-full transition hover:bg-red-100 disabled:cursor-not-allowed disabled:opacity-50"
                       aria-label={`Delete ${product.product.title}`}
                     >
-                      <svg
-                        width="24"
-                        height="25"
-                        viewBox="0 0 24 25"
-                        fill="none"
-                      >
+                      <svg width="24" height="25" viewBox="0 0 24 25" fill="none">
                         <path
                           d="M12 23.5C18.0748 23.5 23 18.5748 23 12.5C23 6.42525 18.0748 1.5 12 1.5C5.92525 1.5 1 6.42525 1 12.5C1 18.5748 5.92525 23.5 12 23.5Z"
                           stroke="#CCCCCC"
                           strokeMiterlimit="10"
                         />
-
                         <path
                           d="M16 8.5L8 16.5"
                           stroke="#666666"
@@ -323,7 +301,6 @@ export default function CartComp() {
                           strokeLinecap="round"
                           strokeLinejoin="round"
                         />
-
                         <path
                           d="M16 16.5L8 8.5"
                           stroke="#666666"
@@ -345,7 +322,7 @@ export default function CartComp() {
                   <button
                     type="button"
                     onClick={() => router.push("/")}
-                    className="cursor-pointer rounded-full bg-[#f2f2f2] px-8 py-3.5 text-sm font-semibold text-[#4c4c4c] transition hover:bg-[#e6e6e6]"
+                    className="cursor-pointer rounded-full bg-[#f2f2f2] px-4 py-3 text-sm font-semibold text-[#4c4c4c] transition hover:bg-[#e6e6e6] sm:px-8 sm:py-3.5"
                   >
                     Return to shop
                   </button>
@@ -355,7 +332,7 @@ export default function CartComp() {
                   <button
                     onClick={handleClearCart}
                     type="button"
-                    className="cursor-pointer rounded-full bg-[#f2f2f2] px-8 py-3.5 text-sm font-semibold text-[#4c4c4c] transition hover:bg-[#e6e6e6]"
+                    className="cursor-pointer rounded-full bg-[#f2f2f2] px-4 py-3 text-sm font-semibold text-[#4c4c4c] transition hover:bg-[#e6e6e6] sm:px-8 sm:py-3.5"
                   >
                     Clear Cart
                   </button>
@@ -364,75 +341,70 @@ export default function CartComp() {
             </tfoot>
           </table>
         </div>
-
-        {/* Cart Total */}
-        <div className="w-[424px] shrink-0 rounded-xl border border-[#e6e6e6] bg-white p-6 shadow-sm">
-          <h2 className="mb-2 text-xl font-medium leading-7.5 text-[#191919]">
-            Cart Total
-          </h2>
-
-          {/* Total */}
-          <div className="flex items-center justify-between border-b border-[#e5e5e5] py-3">
-            <span className="text-base text-[#4c4c4c]">Total:</span>
-
-            <span className="font-semibold text-[#191919]">
-              {cartData.data.totalCartPrice} EGP
-            </span>
-          </div>
-
-          {/* Number of Items */}
-          <div className="flex items-center justify-between py-3">
-            <span className="text-sm text-[#4c4c4c]">
-              Number Of Cart Items:
-            </span>
-
-            <span className="text-sm font-medium text-[#191919]">
-              {cartData.numOfCartItems}
-            </span>
-          </div>
-
-          {/* Checkout */}
-<div className="mt-5 flex gap-4">
-  <Link
-    href={`/checkout/${cartData?.cartId}?payment=cash`}
-    className="flex-1 rounded-full bg-[#00b206] px-6 py-4 text-center font-semibold text-white transition hover:bg-[#009b05]"
-  >
-    Pay Cash
-  </Link>
-
-  <Link
-    href={`/checkout/${cartData?.cartId}?payment=online`}
-    className="flex-1 rounded-full bg-blue-600 px-6 py-4 text-center font-semibold text-white transition hover:bg-blue-700"
-  >
-    Pay Online
-  </Link>
-</div>
-
-
-          
-        </div>
       </div>
-      {/* Coupon */}
-      <div className="mt-6 flex w-full max-w-200 items-center gap-6 rounded-xl border border-[#e6e6e6] bg-white p-5 shadow-sm">
-        <h3 className="w-1/4 shrink-0 text-xl font-medium leading-7.5 text-[#191919]">
-          Coupon Code
-        </h3>
 
-        <div className="flex w-full items-center overflow-hidden rounded-full border border-[#e6e6e6]">
-          <input
-            type="text"
-            placeholder="Enter code"
-            className="w-full bg-transparent px-6 py-3.5 text-base text-[#999999] outline-none"
-          />
+      {/* Cart Total */}
+      <div className="w-full shrink-0 rounded-xl border border-[#e6e6e6] bg-white p-6 shadow-sm lg:w-[424px]">
+        <h2 className="mb-2 text-xl font-medium leading-7.5 text-[#191919]">
+          Cart Total
+        </h2>
 
-          <button
-            type="button"
-            className="shrink-0 cursor-pointer rounded-full bg-[#333333] px-8 py-4 text-base font-semibold text-white transition hover:bg-[#222222]"
+        <div className="flex items-center justify-between border-b border-[#e5e5e5] py-3">
+          <span className="text-base text-[#4c4c4c]">Total:</span>
+          <span className="font-semibold text-[#191919]">
+            {cartData.data.totalCartPrice} EGP
+          </span>
+        </div>
+
+        <div className="flex items-center justify-between py-3">
+          <span className="text-sm text-[#4c4c4c]">
+            Number Of Cart Items:
+          </span>
+          <span className="text-sm font-medium text-[#191919]">
+            {cartData.numOfCartItems}
+          </span>
+        </div>
+
+        {/* Checkout */}
+        <div className="mt-5 flex flex-col gap-4 sm:flex-row">
+          <Link
+            href={`/checkout/${cartData?.cartId}?payment=cash`}
+            className="flex-1 rounded-full bg-[#00b206] px-6 py-4 text-center font-semibold text-white transition hover:bg-[#009b05]"
           >
-            Apply Coupon
-          </button>
+            Pay Cash
+          </Link>
+
+          <Link
+            href={`/checkout/${cartData?.cartId}?payment=online`}
+            className="flex-1 rounded-full bg-blue-600 px-6 py-4 text-center font-semibold text-white transition hover:bg-blue-700"
+          >
+            Pay Online
+          </Link>
         </div>
       </div>
-    </section>
-  );
+    </div>
+
+    {/* Coupon */}
+    <div className="mt-6 flex w-full max-w-200 flex-col items-stretch gap-4 rounded-xl border border-[#e6e6e6] bg-white p-5 shadow-sm sm:flex-row sm:items-center sm:gap-6">
+      <h3 className="shrink-0 text-xl font-medium leading-7.5 text-[#191919] sm:w-1/4">
+        Coupon Code
+      </h3>
+
+      <div className="flex w-full flex-col items-stretch overflow-hidden rounded-xl border border-[#e6e6e6] sm:flex-row sm:rounded-full">
+        <input
+          type="text"
+          placeholder="Enter code"
+          className="w-full bg-transparent px-6 py-3.5 text-base text-[#999999] outline-none"
+        />
+
+        <button
+          type="button"
+          className="shrink-0 cursor-pointer rounded-xl bg-[#333333] px-8 py-4 text-base font-semibold text-white transition hover:bg-[#222222] sm:rounded-full"
+        >
+          Apply Coupon
+        </button>
+      </div>
+    </div>
+  </section>
+);
 }

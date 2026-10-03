@@ -23,6 +23,7 @@ import {
   Menu,
   Settings,
   ShoppingBag,
+  ShoppingCart,
   UserRound,
 } from "lucide-react";
 
@@ -42,10 +43,16 @@ export default function NavBar() {
 
   const { data: session, status } = useSession();
 
+  /* =========================
+     Cart
+  ========================= */
+
   const { data: cart } = useQuery({
     queryKey: ["GetCart"],
     queryFn: async function () {
-      const response = await fetch("/api/cart");
+      const response = await fetch("/api/cart", {
+        cache: "no-store",
+      });
 
       if (!response.ok) {
         throw new Error("Failed to fetch cart");
@@ -55,6 +62,10 @@ export default function NavBar() {
     },
     enabled: status === "authenticated",
   });
+
+  /* =========================
+     Wishlist
+  ========================= */
 
   const { data: wishlist } = useQuery({
     queryKey: ["wishlist"],
@@ -76,6 +87,10 @@ export default function NavBar() {
   const cartCount = cart?.numOfCartItems ?? 0;
   const wishlistCount = wishlist?.data?.length ?? 0;
 
+  /* =========================
+     Logout
+  ========================= */
+
   function handleLogout() {
     signOut({
       callbackUrl: "/login",
@@ -84,14 +99,23 @@ export default function NavBar() {
 
   return (
     <header className="sticky top-0 z-50 bg-gray-100">
-      <NavigationMenu className="container mx-auto max-w-full bg-gray-100 p-3">
-        <NavigationMenuList className="w-full justify-between">
-          {/* Logo */}
-          <div className="flex items-center gap-3">
-            <Image src={logo} alt="FreshMart" priority />
+      <NavigationMenu className="mx-auto w-full max-w-full bg-gray-100 px-3 py-2 sm:px-4">
+        <NavigationMenuList className="flex w-full items-center justify-between gap-2">
+          {/* =========================
+              Logo
+          ========================= */}
+          <div className="flex shrink-0 items-center">
+            <Link href="/" aria-label="FreshMart home">
+              <Image
+                src={logo}
+                alt="FreshMart"
+                priority
+                className="w-28 sm:w-32"
+              />
+            </Link>
 
             {session?.user?.name && (
-              <div className="hidden items-center gap-3 lg:flex">
+              <div className="ml-4 hidden items-center gap-3 lg:flex">
                 <span className="rounded-md bg-purple-100 px-3 py-1 text-sm font-semibold text-blue-900">
                   Welcome, {session.user.name}
                 </span>
@@ -103,7 +127,9 @@ export default function NavBar() {
             )}
           </div>
 
-          {/* Desktop Navigation */}
+          {/* =========================
+              Desktop Navigation
+          ========================= */}
           <div className="hidden items-center gap-5 md:flex">
             <NavigationMenuItem>
               <Link
@@ -157,6 +183,7 @@ export default function NavBar() {
                 />
               )}
             </NavigationMenuItem>
+
             <NavigationMenuItem>
               <Link
                 href="/about"
@@ -167,40 +194,46 @@ export default function NavBar() {
             </NavigationMenuItem>
           </div>
 
-<div className="flex items-center gap-3 cursor-pointer hover:text-green-600">
-            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-green-50 ">
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    className="h-5 w-5 text-green-600"
-  >
-    <path d="M3 18v-6a9 9 0 0 1 18 0v6" />
-    <path d="M21 19a2 2 0 0 1-2 2h-1v-7h3v5Z" />
-    <path d="M3 19a2 2 0 0 0 2 2h1v-7H3v5Z" />
-  </svg>
+          {/* =========================
+              Support
+          ========================= */}
+          <div className="hidden items-center gap-3 xl:flex">
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-green-50">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="h-5 w-5 text-green-600"
+              >
+                <path d="M3 18v-6a9 9 0 0 1 18 0v6" />
+                <path d="M21 19a2 2 0 0 1-2 2h-1v-7h3v5Z" />
+                <path d="M3 19a2 2 0 0 0 2 2h1v-7H3v5Z" />
+              </svg>
             </div>
 
-            <div className="flex flex-col leading-tight ">
+            <div className="flex flex-col leading-tight">
               <span className="text-xs text-gray-400">Support</span>
+
               <span className="text-sm font-semibold text-gray-800">
                 24/7 Help
               </span>
             </div>
           </div>
 
-          {/* Desktop Actions */}
+          {/* =========================
+              Desktop Actions
+          ========================= */}
           <div className="hidden items-center gap-6 md:flex">
             {status === "authenticated" ? (
               <>
                 <ActionLink
                   href="/cart"
                   label="Cart"
-                  icon={<ShoppingBag className="h-6 w-6" />}
+                  icon={<ShoppingCart className="h-6 w-6" />}
                   count={cartCount}
                 />
 
@@ -225,85 +258,110 @@ export default function NavBar() {
             )}
           </div>
 
-          {/* Mobile Menu */}
-          <NavigationMenuItem className="md:hidden">
-            <NavigationMenuTrigger aria-label="Open menu">
-              <Menu className="h-6 w-6" />
-            </NavigationMenuTrigger>
+          {/* =========================
+              Mobile Actions
+          ========================= */}
+          <div className="ml-auto flex items-center gap-4 md:hidden">
+            {status === "authenticated" && (
+              <>
+                <ActionLink
+                  href="/cart"
+                  label="Cart"
+                  icon={<ShoppingCart className="h-5 w-5" />}
+                  count={cartCount}
+                />
 
-            <NavigationMenuContent>
-              <ul className="w-72 p-2">
-                <ListItem href="/" title="Home" />
-                <ListItem href="/shop" title="Shop" />
-                <ListItem href="/brands" title="Brands" />
-                <ListItem href="/categories" title="Categories" />
+                <ActionLink
+                  href="/wishlist"
+                  label="Wishlist"
+                  icon={<Heart className="h-5 w-5" />}
+                  count={wishlistCount}
+                  countColor="red"
+                />
+              </>
+            )}
 
-                <li className="my-2 border-t border-gray-200" />
+            {/* Mobile Menu */}
+            <NavigationMenuItem>
+              <NavigationMenuTrigger aria-label="Open menu" className="p-1">
+                <Menu className="h-6 w-6" />
+              </NavigationMenuTrigger>
 
-                {status === "authenticated" ? (
-                  <>
-                    <MobileLink
-                      href="/cart"
-                      title="Cart"
-                      icon={<ShoppingBag className="h-5 w-5" />}
-                      count={cartCount}
-                    />
+              <NavigationMenuContent>
+                <ul className="w-72 p-2">
+                  <ListItem href="/" title="Home" />
+                  <ListItem href="/shop" title="Shop" />
+                  <ListItem href="/brands" title="Brands" />
+                  <ListItem href="/categories" title="Categories" />
+                  <ListItem href="/about" title="About" />
 
-                    <MobileLink
-                      href="/wishlist"
-                      title="Wishlist"
-                      icon={<Heart className="h-5 w-5" />}
-                      count={wishlistCount}
-                      countColor="red"
-                    />
+                  <li className="my-2 border-t border-gray-200" />
 
-                    <MobileLink
-                      href="/updateProfile"
-                      title="My Profile"
-                      icon={<UserRound className="h-5 w-5" />}
-                    />
+                  {status === "authenticated" ? (
+                    <>
+                      <MobileLink
+                        href="/cart"
+                        title="Cart"
+                        icon={<ShoppingCart className="h-5 w-5" />}
+                        count={cartCount}
+                      />
 
-                    <MobileLink
-                      href="/allorders"
-                      title="My Orders"
-                      icon={<ShoppingBag className="h-5 w-5" />}
-                    />
+                      <MobileLink
+                        href="/wishlist"
+                        title="Wishlist"
+                        icon={<Heart className="h-5 w-5" />}
+                        count={wishlistCount}
+                        countColor="red"
+                      />
 
-                    <MobileLink
-                      href="/address"
-                      title="My Address"
-                      icon={<MapPin className="h-5 w-5" />}
-                    />
+                      <MobileLink
+                        href="/updateProfile"
+                        title="My Profile"
+                        icon={<UserRound className="h-5 w-5" />}
+                      />
 
-                    <li>
-                      <button
-                        type="button"
-                        onClick={handleLogout}
-                        className="flex w-full items-center gap-3 rounded-md px-4 py-3 text-sm font-medium text-red-500 transition hover:bg-red-50"
-                      >
-                        <LogOut className="h-5 w-5" />
-                        Sign Out
-                      </button>
-                    </li>
-                  </>
-                ) : (
-                  <>
-                    <MobileLink
-                      href="/login"
-                      title="Sign In"
-                      icon={<UserRound className="h-5 w-5" />}
-                    />
+                      <MobileLink
+                        href="/allorders"
+                        title="My Orders"
+                        icon={<ShoppingBag className="h-5 w-5" />}
+                      />
 
-                    <MobileLink
-                      href="/register"
-                      title="Sign Up"
-                      icon={<UserRound className="h-5 w-5" />}
-                    />
-                  </>
-                )}
-              </ul>
-            </NavigationMenuContent>
-          </NavigationMenuItem>
+                      <MobileLink
+                        href="/address"
+                        title="My Address"
+                        icon={<MapPin className="h-5 w-5" />}
+                      />
+
+                      <li className="mt-2 border-t border-gray-200 pt-2">
+                        <button
+                          type="button"
+                          onClick={handleLogout}
+                          className="flex w-full items-center gap-3 rounded-md px-4 py-3 text-sm font-medium text-red-500 transition hover:bg-red-50"
+                        >
+                          <LogOut className="h-5 w-5" />
+                          Sign Out
+                        </button>
+                      </li>
+                    </>
+                  ) : (
+                    <>
+                      <MobileLink
+                        href="/login"
+                        title="Sign In"
+                        icon={<UserRound className="h-5 w-5" />}
+                      />
+
+                      <MobileLink
+                        href="/register"
+                        title="Sign Up"
+                        icon={<UserRound className="h-5 w-5" />}
+                      />
+                    </>
+                  )}
+                </ul>
+              </NavigationMenuContent>
+            </NavigationMenuItem>
+          </div>
         </NavigationMenuList>
       </NavigationMenu>
     </header>
@@ -352,7 +410,11 @@ function ActionLink({
   countColor?: "green" | "red";
 }) {
   return (
-    <Link href={href} aria-label={label} className="relative flex items-center">
+    <Link
+      href={href}
+      aria-label={label}
+      className="relative flex h-8 w-8 items-center justify-center text-gray-700 transition hover:text-green-600"
+    >
       {icon}
 
       {count > 0 && <CountBadge count={count} color={countColor} />}
@@ -373,7 +435,7 @@ function CountBadge({
 }) {
   return (
     <span
-      className={`absolute -right-3 -top-3 flex h-5 min-w-5 items-center justify-center rounded-full px-1 text-xs font-bold text-white ${
+      className={`absolute -right-2 -top-2 flex h-5 min-w-5 items-center justify-center rounded-full px-1 text-[10px] font-bold text-white ${
         color === "red" ? "bg-red-500" : "bg-green-500"
       }`}
     >
@@ -422,13 +484,13 @@ function ProfileMenu({
   setOpen: (value: boolean) => void;
   onLogout: () => void;
 }) {
-  function closeMenu() {
-    setOpen(false);
-  }
-
   const addressUrl = `/address?name=${encodeURIComponent(
     name ?? "",
   )}&email=${encodeURIComponent(email ?? "")}`;
+
+  function closeMenu() {
+    setOpen(false);
+  }
 
   return (
     <div className="relative">
@@ -589,7 +651,7 @@ function MobileLink({
 function ListItem({ title, href }: { title: string; href: string }) {
   return (
     <li>
-      <NavigationMenuLink>
+      <NavigationMenuLink asChild>
         <Link
           href={href}
           className="block rounded-md px-4 py-2 text-sm font-medium transition hover:bg-green-50 hover:text-green-700"

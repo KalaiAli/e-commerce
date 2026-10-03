@@ -20,14 +20,16 @@ export default async function FeaturedProducts({
 
   return (
     <section>
+
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5">
       
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
         {filteredProducts.map((product, index) => {
           const isInWishlist =
             wishlist.success &&
             wishlist.data?.some((item) => item._id === product._id) === true;
 
           return (
+          
             <ProductCard
               key={product._id}
               product={product}
